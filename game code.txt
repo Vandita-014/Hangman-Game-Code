@@ -1,0 +1,160 @@
+-> Code is given below:
+
+
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+
+void wordselect(char a[]);								//Function to assign word to be guesesd.
+
+
+int main()
+{
+	int i,j,c,count=0,ans=0,flag=0, flag1=0,cha=0;		//i,j for iterations | c for wordlength | count to track incorrect guesses | ans to track correct guesses | cha for guessed letters
+
+	char a[7],gg[10];									//Word to be guessed is stored in a[]. Guessed letters are stored in gg[].
+	char b[10],alpha;									//b[] stores the currently (correctly) guessed letters. alpha stores the guessed letter.
+
+	wordselect(a);
+	c=strlen(a);
+
+	printf("\n\n\t\t\t * HANGMAN * \n");
+	printf("\n\t\t\t******\t\t\t");
+	printf("\n\t\t\t..............\n\n\t\t\t  ");
+
+	for(j=0;j<c;j++)
+		{
+			printf("_ ");								//This loop prints the blank spaces to indicate word length when the game begins.
+			b[j]='_';
+		}
+
+	printf("\n\n\t\t\t..............\t\t\t");
+	printf("\n\n\t\t\t******");
+
+
+	while(count<c)
+	{
+		flag=0;											//This flag checks for correct letter input.
+		flag1=0;										//This flag checks for repeated letter input that are correct.
+
+		printf("\n\n\n\tEnter a character:  ");
+		alpha=getche();
+		gg[cha++]=alpha;								//Storing already guessed letters into g[]
+
+		for(i=0; i<c; i++)
+		{
+			if(alpha==b[i])
+				{
+					flag1++;							//Repeated correct letter check
+					break;
+				}
+
+
+			else if (alpha==a[i])
+				{
+					b[i]=a[i];							//CORRECT GUESS
+					flag=1;
+					ans++;
+				}
+		}
+
+
+
+		printf("\n\n\t\t\t * HANGMAN * \n");
+		printf("\n\t\t\t******\t\t\t");
+		printf("\n\t\t\t..............\n\n\t\t\t  ");
+
+		for(i=0;i<c;i++)
+			printf("%c ",b[i]);
+
+
+		printf("\n\n\t\t\t..............\t\t\t");
+		printf("\n\n\t\t\t******");
+
+
+		printf("\n\n\tGuessed letters: ");
+		for(i=0; i<cha; i++)
+			printf(" %c",gg[i]);
+
+
+		if(flag1!=0)
+		{
+			printf("\n\tYou have already guessed this letter.");
+			printf("\n\n\t\t(You have %d more words to go.)",c-ans);				//Repeated correct letter display
+			printf("\n\t\t(You have %d mistakes left)",c-count);
+		}
+
+		else if(flag==0)
+		{
+			count++;
+			printf("\n\n\t\tINCORRECT! %c is a wrong guess.",alpha);				//INCORRECT GUESS DISPLAY
+			printf("\n\n\t\t(You have %d more words to go.)",c-ans);
+			printf("\n\t\t(You have %d mistakes left)",c-count);
+		}
+
+		else
+		{
+			printf("\n\n\t\tCORRECT!!");											//CORRECT GUESS DISPLAY
+			printf("\n\n\t\t(You have %d more words to go.)",c-ans);
+			printf("\n\t\t(You have %d mistakes left)",c-count);
+
+		}
+
+		if(ans==c) break;								//Condition to exit the loop if you win
+	}
+
+
+	if(ans==c)
+	{
+		printf("\n\n\n\tCONGRATULATIONS! YOU'VE WON");
+		printf("\n"
+					"\n\t       \\O/     "
+					"\n\t        |   "												//Victory display
+					"\n\t       / \\    "
+					"\n\t    =========  ");
+	}
+
+
+	else
+	{
+		printf("\n\n\n\t\tYou lose.\n\n \t\t *Sorry, you were hanged.*\n");
+		printf("\n\n\n\tThe word was %s",a);
+		printf("\n"
+					"	   	+---+  "
+					"\n    		|   |  "
+					"\n   		O   |  "											//Defeat display
+					"\n\t      --|-- |  "
+					"\n\t       / \\  |  "
+					"\n\t\t    |  "
+					"\n\t\t=========  ");
+	}
+
+}
+
+
+void wordselect(char a[])
+{
+	int c;
+	srand(time(NULL));						//srand() requires random value (seed) as parameter. time(null) is the current time, which always changes, ensuring random seed.
+	c=rand()%5;   							//random function to generate values 0 to 4. Amount of words can be increased or decreased by altering the % value.
+
+	switch(++c)
+	{
+		case 1: strcpy(a,"world");
+				break;
+
+		case 2: strcpy(a,"india");
+				break;
+
+		case 3: strcpy(a,"folder");
+				break;
+
+		case 4: strcpy(a,"great");
+				break;
+
+		case 5: strcpy(a,"clouds");
+				break;
+	}
+}
